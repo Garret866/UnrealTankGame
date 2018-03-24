@@ -35,6 +35,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		float LineTraceRange = 1000000; //10km is 1mil cm
+
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector & HitLocation) const;
 
 };
