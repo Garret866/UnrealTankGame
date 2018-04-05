@@ -2,6 +2,8 @@
 
 #include "TankAimingComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/Actor.h"
+#include "Runtime/Engine/Classes/Components/SceneComponent.h"
+#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -16,8 +18,18 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(FVector WorldSpaceAim)
 {
-	auto ThisTankName = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"),*ThisTankName, *WorldSpaceAim.ToString());
+	if (Barrel)
+	{
+		auto ThisTankName = GetOwner()->GetName();
+		auto BarrelLocation = Barrel->GetComponentLocation().ToString();
+		UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s"),*ThisTankName, *WorldSpaceAim.ToString(),*BarrelLocation);
+	}
+	
+}
+
+void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+{
+	Barrel = BarrelToSet;
 }
 
 // Called when the game starts
