@@ -20,7 +20,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	ATank* GetControlledTank() const;
+	ATank * GetControlledTank() const;
 	//start the tank moving the barrel so the shot would hit where the crosshair intersects with the world
 	void AimTowardsCrosshair();
 	//return an out param, true if hit landscape

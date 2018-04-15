@@ -1,3 +1,4 @@
 #pragma once
 #include "AIController.h"
-#include "Tank.h"
+//forward dclr:
+class ATank;
