@@ -15,7 +15,7 @@ public:
 	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable,Category = Setup)
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 	UPROPERTY(Category = "Firing", EditAnywhere)
 		float LaunchSpeed = 100000; //TODO find sensible default

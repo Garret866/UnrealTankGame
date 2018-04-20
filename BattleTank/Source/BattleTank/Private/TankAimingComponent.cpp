@@ -3,7 +3,8 @@
 #include "TankAimingComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/Actor.h"
 #include "Runtime/Engine/Classes/Components/SceneComponent.h"
-#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+//#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "TankBarrel.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -25,31 +26,30 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 		//if have aim solution:
 		if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, StartLocation, WorldSpaceAim,
-			LaunchSpeed,ESuggestProjVelocityTraceOption::DoNotTrace))
-			{
-				auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-				MoveBarrelTowards(AimDirection);
+			LaunchSpeed, ESuggestProjVelocityTraceOption::DoNotTrace))
+		{
+			auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+			MoveBarrelTowards(AimDirection);
 
-				//auto ThisTankName = GetOwner()->GetName();
-				//UE_LOG(LogTemp, Warning, TEXT("%s firing at %s"), *ThisTankName, *AimDirection.ToString());
-			}
+			//auto ThisTankName = GetOwner()->GetName();
+			//UE_LOG(LogTemp, Warning, TEXT("%s firing at %s"), *ThisTankName, *AimDirection.ToString());
+		}
 	}
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent * BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	
 	//Work out difference between current barrel rotation and aimdirection
 	auto BarrelRotation = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotation;
-	UE_LOG(LogTemp, Warning, TEXT("DeltaRotator: %s"), *DeltaRotator.ToString());
-	//move barrel right amount this frame
-	//given max elevation speed, and the frame time
+	Barrel->Elevate(5.0); //TODO remove magic number
 
 }
 
