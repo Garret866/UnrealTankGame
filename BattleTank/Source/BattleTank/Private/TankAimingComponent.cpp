@@ -3,10 +3,10 @@
 #include "TankAimingComponent.h"
 #include "Runtime/Engine/Classes/GameFramework/Actor.h"
 #include "Runtime/Engine/Classes/Components/SceneComponent.h"
-//#include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
 #include "TankBarrel.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/Engine/World.h" 
+#include "TankTurret.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -21,7 +21,8 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 {
-	if (Barrel)
+	//rotate barrel and turret to target
+	if (Turret && Barrel)
 	{
 		FVector OutLaunchVelocity;
 		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -31,21 +32,27 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 		{
 			auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 			MoveBarrelTowards(AimDirection);
+			MoveTurretTowards(AimDirection);
 			auto Time = GetWorld()->GetTimeSeconds();
-			UE_LOG(LogTemp, Warning, TEXT("%f Barrel-Elevate Called %s"), Time, *GetOwner()->GetName());
+			//UE_LOG(LogTemp, Warning, TEXT("%f Barrel-Elevate Called %s"), Time, *GetOwner()->GetName());
 		}
 		else
 		{
-			auto Time = GetWorld()->GetTimeSeconds(); 
+			auto Time = GetWorld()->GetTimeSeconds();
 			UE_LOG(LogTemp, Warning, TEXT("%f target out of range %s"), Time, *GetOwner()->GetName());
 		}
-		
 	}
+	
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
+}
+
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+{
+	Turret = TurretToSet;
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
@@ -56,5 +63,15 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto DeltaRotator = AimAsRotator - BarrelRotation;
 	Barrel->Elevate(DeltaRotator.Pitch);
 
+}
+
+void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+{
+	//Work out difference between current turret rotation and aimdirection
+	auto TurretRotation = Turret->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator.Yaw - TurretRotation.Yaw;
+	UE_LOG(LogTemp, Warning, TEXT("aimYaw: %f, turretNowYaw: %f, DeltaYaw: %f"), AimAsRotator.Yaw, TurretRotation.Yaw, DeltaRotator);
+	Turret->Rotate(DeltaRotator);
 }
 

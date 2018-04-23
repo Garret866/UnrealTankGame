@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TankAIControllerPRE.h"
+#include "AIController.h"
 #include "TankAIController.generated.h"
-
+//forward dclr:
+class ATank;
 /**
  * 
  */

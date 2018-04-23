@@ -3,7 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TankPlayerControllerPRE.h"
+#include "GameFramework/PlayerController.h"
+#include "Runtime/Engine/Classes/GameFramework/Actor.h"
+//forward declr:
+class ATank;
 #include "TankPlayerController.generated.h"
 
 /**
@@ -21,7 +24,7 @@ public:
 
 private:
 	ATank * GetControlledTank() const;
-	//start the tank moving the barrel so the shot would hit where the crosshair intersects with the world
+	//start the tank moving the barrel and turret so the shot would hit where the crosshair intersects with the world
 	void AimTowardsCrosshair();
 	//return an out param, true if hit landscape
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const; 

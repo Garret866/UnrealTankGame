@@ -37,7 +37,6 @@ ATank* ATankPlayerController::GetControlledTank() const
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	if (!GetControlledTank()) { return; }
-
 	FVector HitLocation; //Out param
 	if (GetSightRayHitLocation(HitLocation))
 	{

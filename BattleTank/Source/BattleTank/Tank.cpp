@@ -2,10 +2,17 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "TankTurret.h"
+//#include "Runtime/Engine/Classes/Engine/World.h" //TODO remove this
 
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+}
+
+void ATank::SetTurretReference(UTankTurret* TurretToSet)
+{
+	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
 // Sets default values
@@ -28,10 +35,11 @@ void ATank::BeginPlay()
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	Super::SetupPlayerInputComponent(PlayerInputComponent); 
 }
 
 void ATank::AimAt(FVector HitLocation)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("%f AimAt is ticking %s"),GetWorld()->GetTimeSeconds(),*GetOwner()->GetName());
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }

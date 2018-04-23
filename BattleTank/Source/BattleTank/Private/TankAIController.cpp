@@ -34,10 +34,10 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (!PlayersTank || !ControlledTank) { return; }
-	//move towards the player
+	//move towards the player TODO
 	//aim towards player
 	ControlledTank->AimAt(PlayersTank->GetTargetLocation(ControlledTank)); //targetLocation is more optimal than location, but subject to change
-	//fire when ready
+	//fire when ready TODO
 }
 
 ATank* ATankAIController::GetPlayerTank() const
