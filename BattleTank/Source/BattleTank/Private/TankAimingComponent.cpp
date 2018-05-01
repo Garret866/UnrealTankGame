@@ -13,7 +13,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true; //TODO should we really tick here?
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -31,15 +31,7 @@ void UTankAimingComponent::AimAt(FVector WorldSpaceAim, float LaunchSpeed)
 			LaunchSpeed, false, 0, 0, ESuggestProjVelocityTraceOption::DoNotTrace))
 		{
 			auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-			MoveBarrelTowards(AimDirection);
-			MoveTurretTowards(AimDirection);
-			auto Time = GetWorld()->GetTimeSeconds();
-			//UE_LOG(LogTemp, Warning, TEXT("%f Barrel-Elevate Called %s"), Time, *GetOwner()->GetName());
-		}
-		else
-		{
-			auto Time = GetWorld()->GetTimeSeconds();
-			UE_LOG(LogTemp, Warning, TEXT("%f target out of range %s"), Time, *GetOwner()->GetName());
+			MoveBarrelTowards(AimDirection); //moves both barrel and turret
 		}
 	}
 	
@@ -62,16 +54,8 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotation;
 	Barrel->Elevate(DeltaRotator.Pitch);
+	Turret->Rotate(DeltaRotator.Yaw); //TODO fix this because degrees are -+
 
 }
 
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
-{
-	//Work out difference between current turret rotation and aimdirection
-	auto TurretRotation = Turret->GetForwardVector().Rotation();
-	auto AimAsRotator = AimDirection.Rotation();
-	auto DeltaRotator = AimAsRotator.Yaw - TurretRotation.Yaw;
-	UE_LOG(LogTemp, Warning, TEXT("aimYaw: %f, turretNowYaw: %f, DeltaYaw: %f"), AimAsRotator.Yaw, TurretRotation.Yaw, DeltaRotator);
-	Turret->Rotate(DeltaRotator);
-}
 
