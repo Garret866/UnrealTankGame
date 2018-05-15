@@ -6,6 +6,7 @@
 #include "TankBarrel.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Projectile.h"
+#include "TankMovementComponent.h"
 
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
@@ -42,6 +43,7 @@ ATank::ATank()
 
 	//no need to protect pointers as added at construction
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +61,5 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector HitLocation)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%f AimAt is ticking %s"),GetWorld()->GetTimeSeconds(),*GetOwner()->GetName());
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
