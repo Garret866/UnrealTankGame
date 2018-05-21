@@ -20,10 +20,6 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 	
 	auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention).Z;
 	IntendTurnRight(RightThrow);
-
-	FString TankName = GetOwner()->GetName();
-	//UE_LOG(LogTemp, Warning, TEXT("%s RightThrow To %f"), *TankName, (RightThrow));
-	//UE_LOG(LogTemp, Warning, TEXT("%s Vectoring To %s"), *TankName, *(AIForwardIntention.ToString()));
 }
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
