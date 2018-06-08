@@ -18,7 +18,6 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	//Logs where the object is aiming at in the world
 	void AimAt(FVector WorldSpaceAim,float LaunchSpeed);
 
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
